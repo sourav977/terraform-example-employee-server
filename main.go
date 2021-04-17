@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -11,10 +10,12 @@ import (
 )
 
 func init() {
-	os.Setenv("MONGO_CONNECTION_URL", "mongodb://localhost:27017")
+	if os.Getenv("MONGO_CONNECTION_URL") == "" {
+		os.Setenv("MONGO_CONNECTION_URL", "mongodb://mongo:27017")
+	}
 }
+
 func main() {
-	fmt.Println(os.Getenv("MONGO_CONNECTION_URL"))
 	router := mux.NewRouter()
 	router.HandleFunc("/api/getAllEmployees", ctrl.GetAllEmployees).Methods("GET")
 	router.HandleFunc("/api/addEmployee", ctrl.AddEmployee).Methods("POST")
